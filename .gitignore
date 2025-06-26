@@ -1,0 +1,25 @@
+# Archivos JSON (u otros) sensibles o temporales
+TMDB_movie_dataset_v11.csv
+Archivo_usuarios_normales.json
+Archivo_usuarios_premium.json
+visualizaciones.json
+
+*.cache
+*.log
+
+# Carpetas de Python que no deben subirse
+__pycache__/
+*.pyc
+InterfazPrincipal2.py
+
+# Archivos de entorno o configuración local
+.env
+
+# Archivos de bases de datos temporales
+*.db
+
+# Archivos de VS Code o editores
+.vscode/
+
+# Carpeta de errores
+Errores/
