@@ -2,6 +2,7 @@ import os
 import json
 import hashlib
 import pandas as pd 
+import logging
 
 # ------------------- Clase Funciones -------------------
 class Funciones:
@@ -90,6 +91,34 @@ class Funciones:
                 else:
                     raise ValueError(f"No se pudo cargar el CSV, falta la columna {col}.")
         return [Pelicula(idx, datos["names"], datos["date_x"], datos["score"], datos["genre"]) for idx, (_, datos) in enumerate(df.iterrows())]
+    
+    @staticmethod
+    def logger(nombre_logger: str, ruta_log: str, nivel=logging.DEBUG) -> logging.Logger:
+        """
+        Crea un logger con nombre único que escribe en la ruta especificada.
+        
+        Args: nombre_logger (str): Nombre del logger (por ejemplo, 'premium', 'cliente', etc.).
+        ruta_log (str): Ruta completa al archivo de log (por ejemplo, 'Logs/errores.log').
+        nivel (int): Nivel de logging (por defecto DEBUG).
+        
+        Returns:
+        logging.Logger: Instancia del logger configurado.
+        
+        """
+        # Asegurar que la carpeta del archivo exista
+        os.makedirs(os.path.dirname(ruta_log), exist_ok=True)
+        
+        logger = logging.getLogger(nombre_logger)
+        logger.setLevel(nivel)
+        
+        # Evitar duplicados: solo agrega handler si no lo tiene
+        if not any(isinstance(h, logging.FileHandler) and h.baseFilename == os.path.abspath(ruta_log)
+                   for h in logger.handlers):
+            handler = logging.FileHandler(ruta_log, mode='w', encoding='utf-8')
+            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+        return logger
 
 # ------------------- Clases -------------------
 class Pelicula:

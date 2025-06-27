@@ -1,43 +1,24 @@
 from PyQt6.QtWidgets import (QDialog, QLabel,
-QPushButton, QLineEdit, QMessageBox)
+QPushButton, QLineEdit)
 
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from Clases_and_metodos import Usuario, Funciones
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 import os
 import logging
-import time
 
 ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
-
-# Configuración mejorada del logging
-def configurar_logging():
-    errores_dir = os.path.join(os.path.dirname(__file__), "Errores")
-    if not os.path.exists(errores_dir):
-        os.makedirs(errores_dir)
-    
-    Errores_ruta = os.path.join(errores_dir, "mi_aplicacion.log")
-    
-    logging.basicConfig(
-        filename=Errores_ruta,
-        level=logging.DEBUG,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        filemode='w'
-    )
-    return Errores_ruta
-
-# Configura el logging al inicio.
-Errores_ruta = configurar_logging()
+ruta_log = os.path.join(os.path.dirname(__file__), "ErroresNormal", "ErrorRegistro.log")
 
 class RegistrarUsuario(QDialog):
     def __init__(self, sistema, tipo="normal"):
         super().__init__()
         self.sistema = sistema
         self.tipo = tipo
-        self.logger = logging.getLogger(__name__)  # Logger específico para la clase
+        self.logger = Funciones.logger("ErrorRegistro", ruta_log)
         self.setModal(True)
         self.generar_formulario()
-        self.logger.debug("Errores cargados (Si hay, sino hay que borrar esta linea de codigo y la 39)")  # Mensaje de prueba
+        self.logger.debug("Mensajes de logging cargados")  # Mensaje de prueba
 
     def generar_formulario(self):
         self.setGeometry(500,150,500,500)
@@ -125,11 +106,11 @@ class RegistrarUsuario(QDialog):
 
         try:
             ruta_imagen = os.path.join(ruta_base, "Logaso.png")
-            logging.debug(f"Intentando cargar imagen desde: {ruta_imagen}")  # Debug para ruta
+            self.logger.debug(f"Intentando cargar imagen desde: {ruta_imagen}")  # Debug para ruta
             
             if not os.path.exists(ruta_imagen):
                 mensaje_error = f"El archivo de imagen no existe: {ruta_imagen}"
-                logging.warning(mensaje_error)
+                self.logger.warning(mensaje_error)
                 
             else:
                 try:
@@ -147,12 +128,11 @@ class RegistrarUsuario(QDialog):
                         Label_imagen.setPixmap(pixmap_escalado)
                         Label_imagen.move(170, 10)
                         Label_imagen.resize(pixmap_escalado.width(), pixmap_escalado.height())
-                        logging.debug("Imagen cargada exitosamente")  # Confirmación
+                        self.logger.debug("Imagen cargada exitosamente")  # Confirmación
                 except Exception as e:
-                    logging.error(f"Error al procesar la imagen: {str(e)}", exc_info=True)
+                    self.logger.error(f"Error al procesar la imagen: {str(e)}", exc_info=True)
         except Exception as e:
-            logging.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
-
+            self.logger.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
 
     #Acá en registrar_usuario no pusimos logging.
     #--------------------------------------------
@@ -194,8 +174,6 @@ class RegistrarUsuario(QDialog):
 
     def cancelar_registro(self):
         self.close()
-
-
 
 
 

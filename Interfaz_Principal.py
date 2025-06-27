@@ -6,35 +6,22 @@ from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 from Registro import RegistrarUsuario # Importar la lógica desde Registro.py
 from Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones #Importar logica desde Codigo.py
 from Interfaz_Cine import CineGUI #Interfaz de las peliculas
-from InterfazPremium import CineGUI2
-from PremiumPregunta import PremiumPregunta # Ventana de pregunta para usuarios premium
+from Premium.InterfazPremium import CineGUI2
+from Premium.PremiumPregunta import PremiumPregunta # Ventana de pregunta para usuarios premium
 import logging
 
 ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
 ruta_csv = os.path.join(ruta_base, "imdb_movies.csv")
 ruta_premium = os.path.join(os.path.dirname(__file__), "Recursos", "imdb_movies.csv")
-
-# Configuración logging
-def configurar_logging():
-    errores_dir = os.path.join(os.path.dirname(__file__), "Errores")
-    if not os.path.exists(errores_dir):
-        os.makedirs(errores_dir)
-    
-    Errores_ruta = os.path.join(errores_dir, "mi_aplicacion.log")
-    
-    logging.basicConfig(
-        filename=Errores_ruta,
-        level=logging.DEBUG,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        filemode='w'
-    )
-    return Errores_ruta
+ruta_log = os.path.join(os.path.dirname(__file__), "ErroresNormal", "ErrorPrincipal.log")
 
 class LoginGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.sistema = SistemaCineXtreem(ruta_csv)
+        self.logger = Funciones.logger("ErrorPrincipal", ruta_log)
         self.InterfazGrafica()
+        self.logger.debug("Mensajes de logging cargados exitosamente")  # Mensaje de prueba
 
     def aplicar_estilo_boton(self, boton):
         boton.setStyleSheet("""
@@ -136,11 +123,11 @@ class LoginGUI(QWidget):
 
         try:
             ruta_imagen = os.path.join(ruta_base, "Logaso.png")
-            logging.debug(f"Intentando cargar imagen desde: {ruta_imagen}")  # Debug para ruta
+            self.logger.debug(f"Intentando cargar imagen desde: {ruta_imagen}")  # Debug para ruta
             
             if not os.path.exists(ruta_imagen):
                 mensaje_error = f"El archivo de imagen no existe: {ruta_imagen}"
-                logging.warning(mensaje_error)
+                self.logger.warning(mensaje_error)
                 
             else:
                 try:
@@ -158,11 +145,11 @@ class LoginGUI(QWidget):
                         Label_imagen.setPixmap(pixmap_escalado)
                         Label_imagen.move(170, 10)
                         Label_imagen.resize(pixmap_escalado.width(), pixmap_escalado.height())
-                        logging.debug("Imagen cargada exitosamente")  # Confirmación
+                        self.logger.debug("Imagen cargada exitosamente")  # Confirmación
                 except Exception as e:
-                    logging.error(f"Error al procesar la imagen: {str(e)}", exc_info=True)
+                    self.logger.error(f"Error al procesar la imagen: {str(e)}", exc_info=True)
         except Exception as e:
-            logging.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
+            self.logger.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
         
         # Texto debajo del logo
         self.texto_abajo_del_logo = QLabel(self)

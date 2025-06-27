@@ -6,15 +6,21 @@ from Clases_and_metodos import Usuario, Funciones
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 import os
 
-ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
+ruta_base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Recursos")
+ruta_log = os.path.join(os.path.dirname(__file__), "ErroresPremium", "ErroresPrem.log")
+
+# Hace una "ruta absoluta" y con los ".." vuelve hacía atras.
+# Es decir, si estamos en "Premium" vuelve a "Codigo-plataforma" y busca la carpeta "Recursos"
 
 class RegistrarUsuario(QDialog):
     def __init__(self, sistema, tipo="normal"):
         super().__init__()
         self.sistema = sistema
         self.tipo = tipo
+        self.logger = Funciones.logger("ErroresPrem", ruta_log)
         self.setModal(True)
         self.generar_formulario()
+        self.logger.debug("Mensajes de logging cargados correctamente")  # Mensaje de prueba
 
     def generar_formulario(self):
         self.setGeometry(500,150,500,500)
@@ -100,34 +106,35 @@ class RegistrarUsuario(QDialog):
         self.login_erroneo.resize(400, 30)  # Agrandar el tamaño para mostrar todo el mensaje
         self.login_erroneo.move(90,275)
 
-        ruta_imagen = os.path.join(ruta_base, "Logaso.png")
         try:
-            with open(ruta_imagen, "rb"):
-                Label_imagen = QLabel(self)
+            ruta_imagen = os.path.join(ruta_base, "Logaso.png")
+            self.logger.debug(f"Intentando cargar imagen desde: {ruta_imagen}")  # Debug para ruta
+            
+            if not os.path.exists(ruta_imagen):
+                mensaje_error = f"El archivo de imagen no existe: {ruta_imagen}"
+                self.logger.warning(mensaje_error)
                 
-                # Cargar la imagen como QPixmap
-                pixmap = QPixmap(ruta_imagen)
-                Label_imagen.setStyleSheet("background-color: transparent;")
-
-                # Escalarla
-                pixmap_escalado = pixmap.scaled(250, 220, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-                
-                # Asignar la imagen escalada al QLabel
-                Label_imagen.setPixmap(pixmap_escalado)
-                
-                # Mover la imagen a la posición deseada
-                Label_imagen.move(170, 10)
-                Label_imagen.resize(pixmap_escalado.width(), pixmap_escalado.height())
-
-        except FileNotFoundError as e:
-            # Mensaje de error con el logo (en rojo)
-
-            self.error_logo = QLabel(self)
-            self.error_logo.setText(f"Error con el logo {e}")
-            self.error_logo.setFont(QFont("Times New Roman", 11))
-            self.error_logo.setStyleSheet("color: red")
-            self.error_logo.resize(400, 30)  # Coordenadas para mostrar todo el mensaje de error
-            self.error_logo.move(0,30)
+            else:
+                try:
+                    with open(ruta_imagen, "rb"):
+                        Label_imagen = QLabel(self)
+                        pixmap = QPixmap(ruta_imagen)
+                        Label_imagen.setStyleSheet("background-color: transparent;")
+                        
+                        pixmap_escalado = pixmap.scaled(
+                            250, 220,
+                            Qt.AspectRatioMode.KeepAspectRatio,
+                            Qt.TransformationMode.SmoothTransformation
+                        )
+                        
+                        Label_imagen.setPixmap(pixmap_escalado)
+                        Label_imagen.move(170, 10)
+                        Label_imagen.resize(pixmap_escalado.width(), pixmap_escalado.height())
+                        self.logger.debug("Imagen cargada exitosamente")  # Confirmación
+                except Exception as e:
+                    self.logger.error(f"Error al procesar la imagen: {str(e)}", exc_info=True)
+        except Exception as e:
+            self.logger.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
 
     def registrar_usuario(self):
         correo = self.entrada_correo.text()
@@ -166,4 +173,3 @@ class RegistrarUsuario(QDialog):
             self.close()
     def cancelar_registro(self):
         self.close()
-

@@ -1,8 +1,7 @@
 from PyQt6.QtWidgets import QPushButton, QLabel, QDialog
-from RegistroPremium import RegistrarUsuario
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
-from RegistroPremium import RegistrarUsuario
+from Premium.RegistroPremium import RegistrarUsuario
 
 class PremiumPregunta(QDialog):
     def __init__(self, sistema):
