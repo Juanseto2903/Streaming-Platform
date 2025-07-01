@@ -7,7 +7,7 @@ visualizaciones.json
 *.cache
 *.log
 
-# Carpetas de Python que no deben subirse
+# Archivos de Python que no deben subirse
 __pycache__/
 *.pyc
 InterfazPrincipal2.py
@@ -21,5 +21,6 @@ InterfazPrincipal2.py
 # Archivos de VS Code o editores
 .vscode/
 
-# Carpeta de errores
-Errores/
+# Carpetas de errores
+ErroresNormal/
+ErroresPremium/

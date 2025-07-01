@@ -102,42 +102,42 @@ class CineGUI(QWidget):
         self.label_bienvenida.setStyleSheet("background-color: transparent; color: white;")
         self.label_bienvenida.setText(f"Bienvenido, {self.sistema.usuario_actual.nombre} \U0001F44B")
         self.label_bienvenida.setFont(QFont("Arial", 12))
-        self.label_bienvenida.move(35, 43)
+        self.label_bienvenida.move(35, 55)
         self.label_bienvenida.resize(300, 30)
 
         # Botones a la izquierda
         self.btn_ver = QPushButton("🎬 Ver película", self)
-        self.btn_ver.move(37, 100)
+        self.btn_ver.move(37, 110)
         self.btn_ver.resize(220, 30)
         self.btn_ver.clicked.connect(self.ver_pelicula)
         self.aplicar_estilo_boton(self.btn_ver)
 
         self.btn_guardar = QPushButton("📌 Ver más tarde", self)
-        self.btn_guardar.move(37, 140)
+        self.btn_guardar.move(37, 150)
         self.btn_guardar.resize(220, 30)
         self.btn_guardar.clicked.connect(self.guardar_ver_mas_tarde)
         self.aplicar_estilo_boton(self.btn_guardar)
 
         self.btn_favorita = QPushButton("💖 Tus Favoritas", self)
-        self.btn_favorita.move(37, 180)
+        self.btn_favorita.move(37, 190)
         self.btn_favorita.resize(220, 30)
         self.btn_favorita.clicked.connect(self.marcar_favorita)
         self.aplicar_estilo_boton(self.btn_favorita)
 
         self.btn_ver_lista = QPushButton("📜 Listado de 'Ver Mas tarde' ", self)
-        self.btn_ver_lista.move(37, 220)
+        self.btn_ver_lista.move(37, 230)
         self.btn_ver_lista.resize(220, 30)
         self.btn_ver_lista.clicked.connect(self.mostrar_ver_mas_tarde)
         self.aplicar_estilo_boton(self.btn_ver_lista)
 
         self.btn_ver_favoritas = QPushButton("🌟 Listado de favoritas", self)
-        self.btn_ver_favoritas.move(37, 260)
+        self.btn_ver_favoritas.move(37, 270)
         self.btn_ver_favoritas.resize(220, 30)
         self.btn_ver_favoritas.clicked.connect(self.mostrar_favoritas)
         self.aplicar_estilo_boton(self.btn_ver_favoritas)
 
         self.btn_volver = QPushButton("🔙 Volver", self)
-        self.btn_volver.move(37, 300)
+        self.btn_volver.move(37, 310)
         self.btn_volver.resize(220, 30)
         self.btn_volver.clicked.connect(self.volver_inicio)
         self.btn_volver.setVisible(False)
@@ -147,13 +147,13 @@ class CineGUI(QWidget):
         self.label_tiempo = QLabel(self)
         self.label_tiempo.setStyleSheet("color: #B8F2E6; font-size: 10px;")
         self.label_tiempo.move(10, 10)  # Esquina superior izquierda
-        self.label_tiempo.resize(300, 20)
+        self.label_tiempo.resize(300, 15)
 
         # Etiqueta de tiempo estimado
         self.label_tiempo_estimado = QLabel(self)
         self.label_tiempo_estimado.setStyleSheet("color: #B8F2E6; font-size: 10px;")
         self.label_tiempo_estimado.move(10, 30)  # Debajo de la anterior
-        self.label_tiempo_estimado.resize(300, 20)
+        self.label_tiempo_estimado.resize(300, 15)
 
         #Derechos reservados mensaje
         self.derechos_reservados = QLabel(self)

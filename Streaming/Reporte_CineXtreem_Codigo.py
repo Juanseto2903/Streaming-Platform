@@ -8,30 +8,18 @@ import seaborn as sns
 from fpdf import FPDF
 import os
 
-EMAIL_QUIEN_ENVIA = "sebastian.manrique@uao.edu.co"
+EMAIL_QUIEN_ENVIA = ""
 
-PARA = ["leidy_joh.alomia@uao.edu.co", "samuel.arboleda_c@uao.edu.co",
-        "juan_fel.aristizabal@uao.edu.co", "santiago.botero@uao.edu.co",
-        "yinela_luc.burbano@uao.edu.co", "carlos.camacho_e@uao.edu.co",
-        "juan.castillo_d@uao.edu.co", "carlos_alb.cortes@uao.edu.co",
-        "valentina.diaz_l@uao.edu.co", "emmanuel.escobar@uao.edu.co",
-        "valeria.gomez_c@uao.edu.co", "jose_alf.gonzalias@uao.edu.co",
-        "juan_esteban.guevara@uao.edu.co", "saith.gurrute@uao.edu.co",
-        "juan_dav.lasso@uao.edu.co", "sebastian.manrique@uao.edu.co",
-        "thomas.marcos@uao.edu.co", "alejandro.marin_g@uao.edu.co",
-        "joseph.marin_p@uao.edu.co", "fergie.montero@uao.edu.co",
-        "sahara_cam.narvaez@uao.edu.co", "diana_car.panesso@uao.edu.co",
-        "cristian_jes.riascos@uao.edu.co", "catalina.r_rodriguez@uao.edu.co",
-        "afrodriguez@uao.edu.co", "andresrodriguez.cecep@gmail.com","juan.torres_p@uao.edu.co"]  # puedes agregar más correos aquí
+PARA = [""]  # puedes agregar más correos aquí
 
-MI_CONTRA = "pjcx pwzi dwvb dzfc"  # contraseña de aplicación
+MI_CONTRA = ""  # contraseña de aplicación
 
 # Configuración general
 sns.set(style="darkgrid")
 plt.rcParams.update({'figure.autolayout': True})
 
 # Archivos
-ruta_base = os.path.join(os.path.dirname(__file__), 'Recursos')
+ruta_base = os.path.join(os.path.dirname(__file__), 'Streaming', 'Recursos')
 logo_path = os.path.join(ruta_base, "Logaso.png")
 csv_path = os.path.join(ruta_base,"imdb_movies.csv")
 output_pdf = os.path.join(os.path.expanduser("~"), "Downloads", "Reporte_CineXtreem_Final.pdf")

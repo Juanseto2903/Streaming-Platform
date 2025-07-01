@@ -8,7 +8,6 @@ from Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones #Importar l
 from Interfaz_Cine import CineGUI #Interfaz de las peliculas
 from Premium.InterfazPremium import CineGUI2
 from Premium.PremiumPregunta import PremiumPregunta # Ventana de pregunta para usuarios premium
-import logging
 
 ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
 ruta_csv = os.path.join(ruta_base, "imdb_movies.csv")

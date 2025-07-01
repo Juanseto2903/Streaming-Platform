@@ -1,24 +1,26 @@
 from PyQt6.QtWidgets import (QDialog, QLabel,
-QPushButton, QLineEdit)
+QPushButton, QLineEdit, QMessageBox)
 
 from PyQt6.QtGui import QFont, QIcon, QPixmap
 from Clases_and_metodos import Usuario, Funciones
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 import os
-import logging
 
-ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
-ruta_log = os.path.join(os.path.dirname(__file__), "ErroresNormal", "ErrorRegistro.log")
+ruta_base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Recursos")
+ruta_log = os.path.join(os.path.dirname(__file__), "ErroresPremium", "ErroresPrem.log")
+
+# Hace una "ruta absoluta" y con los ".." vuelve hacía atras para abrir "recursos"
+# Nota: dirname abre la carpeta padre donde estan los archivos y ejecuta (en este caso "Premium")
 
 class RegistrarUsuario(QDialog):
     def __init__(self, sistema, tipo="normal"):
         super().__init__()
         self.sistema = sistema
         self.tipo = tipo
-        self.logger = Funciones.logger("ErrorRegistro", ruta_log)
+        self.logger = Funciones.logger("ErroresPrem", ruta_log)
         self.setModal(True)
         self.generar_formulario()
-        self.logger.debug("Mensajes de logging cargados")  # Mensaje de prueba
+        self.logger.debug("Mensajes de logging cargados correctamente")  # Mensaje de prueba
 
     def generar_formulario(self):
         self.setGeometry(500,150,500,500)
@@ -87,13 +89,13 @@ class RegistrarUsuario(QDialog):
 
         #frase motivadora pa q se registren
         Texto_motivador = QLabel(self)
-        Texto_motivador.setText("Empieza ahora. Tu próxima gran experiencia está a un clic. \U0001F4AF")
+        Texto_motivador.setText("Hazlo premium. Accede sin límites y disfruta lo mejor del cine. \U0001F3A5")
         fuente_motivadora = QFont("Times New Roman", 10)
         fuente_motivadora.setItalic(True)
         Texto_motivador.setFont(fuente_motivadora)
-        Texto_motivador.setStyleSheet("color: #87CEEB; background-color: transparent;")
+        Texto_motivador.setStyleSheet("color: #B8F2E6; background-color: transparent;")
         Texto_motivador.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        Texto_motivador.resize(400, 30)  # Ajustá el ancho según la ventana
+        Texto_motivador.resize(400, 40)  # Ajustá el ancho según la ventana
         Texto_motivador.move(50, 385)   # Ajustá la posición según el diseño de la interfaz
 
         # Mensaje de error del login (en rojo)
@@ -134,12 +136,6 @@ class RegistrarUsuario(QDialog):
         except Exception as e:
             self.logger.critical(f"Error crítico en carga de imagen: {str(e)}", exc_info=True)
 
-    #Acá en registrar_usuario no pusimos logging.
-    #--------------------------------------------
-    #Esto porque queremos que el usuario se de cuenta de que le faltan rellenar campos.
-    #------------------------------------------------------------------------------------
-    #Si se pone logging, el usuario no ve el error y no sabe que le falta rellenar campos.
-
     def registrar_usuario(self):
         correo = self.entrada_correo.text()
         nombre = self.entrada_usuario.text()
@@ -162,18 +158,18 @@ class RegistrarUsuario(QDialog):
             
             estado, mensaje = usuario.registrar_usuario(usuarios, tipo=self.tipo)
             
-            # guardar usuarios según el tipo
             if estado:
                 Funciones.guardar_usuarios(usuarios, tipo=self.tipo)
+                
+                # Si el tipo es premium, abrimos directamente la interfaz premium
+                if self.tipo == "premium":
+                    QMessageBox.information(self, "Registro exitoso", "Usuario premium registrado. Inicia sesión para continuar.")
         except Exception as e:
             self.login_erroneo.setText(f"Error interno del programa: {e}")
             return
+        
         self.login_erroneo.setText(mensaje)
         if estado:
             self.close()
-
     def cancelar_registro(self):
         self.close()
-
-
-
