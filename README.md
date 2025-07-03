@@ -34,6 +34,12 @@ cd Streaming-Platform
 # Run the main archive.
 python Interfaz_Principal.py
 ```
+## 🫂 Credits
+
+This project was done with my university friends, now i'm updating and making some changes in it to set it better.
+And because i need to practice my programming lol.
+I'm really grateful to them and you will find their names (and mine too) at the beginning when you run the app btw.
+
 ## 📝 License
 
 Copyright © 2025 [Juanseto2903](https://github.com/Juanseto2903).
