@@ -1,35 +1,41 @@
-# Plataforma Streaming: CineXtreem
+# 🎬 CineXtreem
 
-Este proyecto tiene como objetivo realizar un analisis de datos con python mediante una plataforma de streaming.
+This project was built as a practice platform for browsing and recommending movies. Users can explore a catalog and find top-rated films based on their average score — the best ones appear first.
 
-## Descripción
+You can also generate a kind of report that will show some graphics, stadistics and information from the csv movies, everything in a one PDF, and if you want you can send it via email to your friend, a random dude or even your boss¿?
 
-Se hizo usó de PyQt6 como medio para la creación de la plataforma.
-Manejo de imagenes y tipos de letra: PNG, JPG y ttf.
-Usó de base de datos tipo csv para las peliculas.
+Technologies used:
+- **📱 PyQt6** for the GUI.
+- **📃 Image formats** supported: PNG, JPG.
+- **🖌️Font support**: TTF.
+- **🎞️ Movie database**: CSV file.
 
-## Instalación
+Simply register as you would on any streaming platform and follow the instructions below to launch it 👍
 
-1. Clona el repositorio: `git clone https://github.com/Juanseto2903/Streaming-Platform`
-2. Instala las dependencias: `pendiente a modificar`
+## 📦 Installing dependencies
 
-## Uso
-
-Para ejecutar el proyecto, utiliza el siguiente comando:
-1. (pendiente a modificar)
-
-# Mi Proyecto Python (ESTO ES PRUEBA NAMAS)
-
-Este proyecto hace XYZ y está escrito en **Python**.
-
-## Características
-
-- Modular y reutilizable
-- Manejo de errores con logging
-- Compatible con Git Bash en Windows
-
-## Cómo ejecutar
+**🟦 Windows / 🍎 macOS**
 
 ```bash
-python main.py
+# Install dependencies.
+pip install -r requirements.txt
+```
+> Note: If the command does not work, you can force the installation using the following command: `py -m pip install requirements.txt`.
+
+## 💻 Setup
+
+```bash
+# Clone the repository.
+git clone https://github.com/Juanseto2903/Streaming-Platform
+
+# Go to the repository.
+cd Streaming-Platform
+
+# Run the main archive.
+python Interfaz_Principal.py
+```
+## 📝 License
+
+Copyright © 2025 [Juanseto2903](https://github.com/Juanseto2903).
+This project is [MIT](LICENSE) licensed.
 
