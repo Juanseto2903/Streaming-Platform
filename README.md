@@ -35,7 +35,9 @@ cd Streaming-Platform
 ## 🔧 Initial Config
 
 1. Create a `.env` file in the project root (Inside of "Streaming" folder, not outside) by copying the contents of `.env.example`.
+
 2. Make sure you have MySQL running on your computer (for example, using XAMPP).
+
 3. Have to change the info of `.env.example` to yours (or use the default, depends on yourself test it)
 
 ## 📚 Usage
@@ -60,18 +62,23 @@ python Interfaz_Principal.py
 Or could try this one just being in the repository:
 
 ```bash
-python python Streaming\Interfaz_Principal.py
+python Streaming\Interfaz_Principal.py
 ```
 
->Note: If the database doesn't create automatically, run the `Create_db.py` script to create the necessary database and tables.
+>Note: If the database doesn't create automatically, run the `Create_db.py` script to create the necessary database and tables:
 
 ```bash
 python Streaming\Create_db.py
-# Or just move with "cd" and run it.
+```
+
+Or just move with "cd" to "Streaming" and run this one:
+
+```bash
+python Create_db.py
 ```
 > Note: If the database exists already, it won't create a new or another one.
 
-Enjoy looking up your movies my lad 😌
+                    Enjoy looking up your movies my lad 😌
 
 ## 🫂 Credits
 
