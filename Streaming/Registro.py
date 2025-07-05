@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (QDialog, QLabel,
 QPushButton, QLineEdit)
 
 from PyQt6.QtGui import QFont, QIcon, QPixmap
-from Streaming.Clases_and_metodos import Usuario, Funciones
+from Clases_and_metodos import Usuario, Funciones
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 import os
 

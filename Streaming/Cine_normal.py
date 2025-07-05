@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QPushButton, QLabel, QListWidget, QLineEdit, QDialog, QSlider, QMessageBox
 from PyQt6.QtGui import QPixmap, QIcon, QFont, QFontDatabase, QMouseEvent
 from PyQt6.QtCore import Qt, QTimer, QTime
-from Streaming.Clases_and_metodos import Funciones
+from Clases_and_metodos import Funciones
 import os
 
 # Obtener la ruta del archivo de fuente

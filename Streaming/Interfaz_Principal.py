@@ -3,11 +3,11 @@ import os
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QCheckBox, QCompleter
 from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
-from Registro import RegistrarUsuario # Importar la lógica desde Registro.py
-from Streaming.Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones #Importar logica desde Codigo.py
-from Streaming.Cine_normal import CineGUI #Interfaz de las peliculas
-from Streaming.Premium.Cine_premium import CineGUI2
-from Premium.PremiumPregunta import PremiumPregunta # Ventana de pregunta para usuarios premium
+from Registro import RegistrarUsuario
+from Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones
+from Cine_normal import CineGUI
+from Premium.Cine_premium import CineGUI2
+from Premium.PremiumPregunta import PremiumPregunta
 from Create_db import crear_base_y_tablas
 from dotenv import load_dotenv
 load_dotenv()

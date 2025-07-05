@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import QWidget, QPushButton, QLabel, QListWidget, QLineEdit
 from PyQt6.QtGui import QPixmap, QIcon, QFont, QFontDatabase
 from PyQt6.QtCore import Qt, QTimer, QTime
 import os
-from Streaming.Cine_normal import VentanaReproduccion
-from Streaming.Clases_and_metodos import Funciones
+from Cine_normal import VentanaReproduccion
+from Clases_and_metodos import Funciones
 
 # Obtener la ruta del archivo de fuente
 ruta_base = os.path.join(os.path.dirname(__file__), "..", "Recursos")
