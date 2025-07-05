@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (QDialog, QLabel,
 QPushButton, QLineEdit)
 
 from PyQt6.QtGui import QFont, QIcon, QPixmap
-from Clases_and_metodos import Usuario, Funciones
+from Streaming.Clases_and_metodos import Usuario, Funciones
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 import os
 
@@ -144,29 +144,45 @@ class RegistrarUsuario(QDialog):
         nombre = self.entrada_usuario.text()
         contraseña1 = self.entrada_contraseña1.text()
         contraseña2 = self.entrada_contraseña2.text()
-        
+
         if not correo or not nombre or not contraseña1 or not contraseña2:
             self.login_erroneo.setText("Todos los campos son obligatorios.")
             return
-        
+
         if contraseña1 != contraseña2:
             self.login_erroneo.setText("Las contraseñas no coinciden.")
             return
-        
+
         usuario = Usuario(nombre, contraseña1, correo)
-        
+
         try:
-            # cargar usuarios según el tipo
+            # 1. Cargar usuarios existentes según el tipo
             usuarios = Funciones.cargar_usuarios(tipo=self.tipo)
-            
+
+            # 2. Intentar registrar el nuevo usuario (esto añade el nuevo usuario a 'usuarios' si es exitoso)
             estado, mensaje = usuario.registrar_usuario(usuarios, tipo=self.tipo)
-            
-            # guardar usuarios según el tipo
+
+            # 3. Si el registro fue exitoso, proceder a guardar todos los usuarios
             if estado:
-                Funciones.guardar_usuarios(usuarios, tipo=self.tipo)
+                # --- ¡INICIO DEL CAMBIO CLAVE AQUÍ! ---
+                # Creamos un nuevo diccionario para guardar, asegurando que cada usuario tenga 'correo'.
+                usuarios_a_guardar = {}
+                for email_key, user_data_dict in usuarios.items():
+                    # Si el diccionario de un usuario no tiene la clave 'correo', la añadimos.
+                    # Asumimos que la clave externa 'email_key' es el correo correcto.
+                    if 'correo' not in user_data_dict:
+                        user_data_dict['correo'] = email_key
+                        print(f"DEBUG: Añadiendo clave 'correo' faltante al usuario '{email_key}' antes de guardar en registro.")
+                    usuarios_a_guardar[email_key] = user_data_dict # Añadimos el diccionario (ahora completo) al nuevo diccionario
+                
+                # Guardar el diccionario de usuarios (que ahora está sanitizado)
+                Funciones.guardar_usuarios(usuarios_a_guardar, tipo=self.tipo)
+                # --- ¡FIN DEL CAMBIO CLAVE! ---
         except Exception as e:
-            self.login_erroneo.setText(f"Error interno del programa: {e}")
+            # Captura cualquier error durante la carga o guardado de usuarios
+            self.login_erroneo.setText(f"Error interno del programa al registrar: {e}")
             return
+        
         self.login_erroneo.setText(mensaje)
         if estado:
             self.close()

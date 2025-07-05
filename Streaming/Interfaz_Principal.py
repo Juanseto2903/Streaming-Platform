@@ -4,21 +4,35 @@ from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButto
 from PyQt6.QtGui import QFont, QPixmap, QIcon
 from PyQt6.QtCore import Qt  # Necesario para el modo de escalado
 from Registro import RegistrarUsuario # Importar la lógica desde Registro.py
-from Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones #Importar logica desde Codigo.py
-from Interfaz_Cine import CineGUI #Interfaz de las peliculas
-from Premium.InterfazPremium import CineGUI2
+from Streaming.Clases_and_metodos import SistemaCineXtreem, Usuario, Funciones #Importar logica desde Codigo.py
+from Streaming.Cine_normal import CineGUI #Interfaz de las peliculas
+from Streaming.Premium.Cine_premium import CineGUI2
 from Premium.PremiumPregunta import PremiumPregunta # Ventana de pregunta para usuarios premium
+from Create_db import crear_base_y_tablas
+from dotenv import load_dotenv
+load_dotenv()
+
+print("🛠 Inicio del script Interfaz_Principal")
 
 ruta_base = os.path.join(os.path.dirname(__file__), "Recursos") # Ruta del archivo actual
 ruta_csv = os.path.join(ruta_base, "imdb_movies.csv")
 ruta_premium = os.path.join(os.path.dirname(__file__), "Recursos", "imdb_movies.csv")
 ruta_log = os.path.join(os.path.dirname(__file__), "ErroresNormal", "ErrorPrincipal.log")
 
+print("🚀 Antes de iniciar QApplication/QWidget")
 class LoginGUI(QWidget):
     def __init__(self):
+        print("🎬 Entrando a LoginGUI")
         super().__init__()
+        print("🎬 Arrancando interfaz...")
         self.sistema = SistemaCineXtreem(ruta_csv)
-        self.logger = Funciones.logger("ErrorPrincipal", ruta_log)
+        try:
+            self.logger = Funciones.logger("ErrorPrincipal", ruta_log)
+            self.logger.debug("Logger cargado con éxito.")
+
+        except Exception as e:
+            print("❌ Error al crear logger:", e)
+
         self.InterfazGrafica()
         self.logger.debug("Mensajes de logging cargados exitosamente")  # Mensaje de prueba
 
@@ -256,7 +270,15 @@ class LoginGUI(QWidget):
         self.registro_gui = RegistrarUsuario(self.sistema)
         self.registro_gui.show()
 
-app = QApplication(sys.argv)
-login = LoginGUI()
-login.show()
-sys.exit(app.exec())
+if __name__ == "__main__":
+    print("🚩 Iniciando la aplicación principal...")
+    try:
+        crear_base_y_tablas() # Llama a la función para crear DB y tablas
+        print("✅ Base de datos y tablas verificadas/creadas por crear_base_y_tablas().")
+        app = QApplication(sys.argv)
+        window = LoginGUI()
+        window.show()
+        sys.exit(app.exec())
+    except Exception as e:
+        print(f"❌ Error crítico al iniciar la aplicación: {e}")
+        sys.exit(1)

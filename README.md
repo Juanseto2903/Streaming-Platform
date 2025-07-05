@@ -30,14 +30,33 @@ git clone https://github.com/Juanseto2903/Streaming-Platform
 
 # Go to the repository.
 cd Streaming-Platform
-
-# Run the main archive.
-python Interfaz_Principal.py
 ```
+
+## 🔧 Initial Config
+
+1. Create a `.env` file in the project root (Inside of "Streaming" folder, not outside) by copying the contents of `.env.example`.
+2. Make sure you have MySQL running on your computer (for example, using XAMPP).
+3. Run the `Create_db.py` script to create the necessary database and tables:
+
+```bash
+python Streaming/Create_db.py
+```
+> Note: If the database exists already, it won't create a new or another one.
+
+## 📚 Usage
+
+1. Just run the main archive:
+
+```bash
+python Streaming/Interfaz_Principal.py
+```
+2. Enjoy looking up your movies my lad.
+
 ## 🫂 Credits
 
 This project was done with my university friends, now i'm updating and making some changes in it to set it better.
 And because i need to practice my programming lol.
+
 I'm really grateful to them and you will find their names (and mine too) at the beginning when you run the app btw.
 
 ## 📝 License

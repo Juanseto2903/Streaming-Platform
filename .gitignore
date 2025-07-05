@@ -11,9 +11,12 @@ visualizaciones.json
 __pycache__/
 *.pyc
 InterfazPrincipal2.py
+prueba.py
+Clases_and_metodos_old.py
 
 # Archivos de entorno o configuración local
 .env
+requirements2.txt
 
 # Archivos de bases de datos temporales
 *.db

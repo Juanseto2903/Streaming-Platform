@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import QWidget, QPushButton, QLabel, QListWidget, QLineEdit
 from PyQt6.QtGui import QPixmap, QIcon, QFont, QFontDatabase
 from PyQt6.QtCore import Qt, QTimer, QTime
 import os
-from Interfaz_Cine import VentanaReproduccion
-from Clases_and_metodos import Funciones
+from Streaming.Cine_normal import VentanaReproduccion
+from Streaming.Clases_and_metodos import Funciones
 
 # Obtener la ruta del archivo de fuente
 ruta_base = os.path.join(os.path.dirname(__file__), "..", "Recursos")
@@ -22,10 +22,10 @@ class CineGUI2(QWidget):
     def calcular_tiempo_estimado(self):
         """Calcula el tiempo estimado basado en el historial"""
         if not self.sistema.usuario_actual or not hasattr(self.sistema.usuario_actual, "historial_sesiones"):
-            return 60 * 15  # 15 minutos por defecto si no hay historial
+            return 60 * 5  # 5 minutos por defecto si no hay historial
         
         if not self.sistema.usuario_actual.historial_sesiones:
-            return 60 * 15
+            return 60 * 5
         
         # Calcula el promedio de las últimas 5 sesiones
         ultimas_sesiones = self.sistema.usuario_actual.historial_sesiones[-5:]
@@ -309,16 +309,60 @@ class CineGUI2(QWidget):
                 """)
     def closeEvent(self, event):
         """Se llama al cerrar la aplicación"""
-        
+
         if self.sistema.usuario_actual:
+            # 1. Registrar la sesión en el objeto usuario_actual
             self.sistema.usuario_actual.registrar_sesion(self.tiempo_transcurrido)
-            
+
+            # 2. Cargar todos los usuarios existentes de la base de datos
             usuarios = Funciones.cargar_usuarios(tipo=self.sistema.tipo_usuarios)
-            
-            if self.sistema.usuario_actual.correo in usuarios:
-                usuarios[self.sistema.usuario_actual.correo]["historial_sesiones"] = getattr(
+
+            # 3. Actualizar el historial de sesiones del usuario actual en el diccionario 'usuarios' cargado
+            correo_actual = self.sistema.usuario_actual.correo
+            if correo_actual in usuarios:
+                # Actualiza solo el historial de sesiones del usuario actual
+                usuarios[correo_actual]["historial_sesiones"] = getattr(
                     self.sistema.usuario_actual, "historial_sesiones", []
                 )
-                Funciones.guardar_usuarios(usuarios, tipo=self.sistema.tipo_usuarios)
+                # Asegurarse de que el 'correo' esté presente en el diccionario del usuario
+                # Esto es una medida de seguridad extra, por si el diccionario cargado no lo tuviera
+                if 'correo' not in usuarios[correo_actual]:
+                    usuarios[correo_actual]['correo'] = correo_actual
+            else:
+                # Si por alguna razón el usuario actual no está en el diccionario cargado,
+                # lo agregamos completamente para evitar problemas al guardar.
+                print(f"❌ ADVERTENCIA: Usuario actual '{correo_actual}' no encontrado en el diccionario cargado. Agregándolo...")
+                usuarios[correo_actual] = {
+                    "nombre": self.sistema.usuario_actual.nombre,
+                    "correo": self.sistema.usuario_actual.correo, # Aseguramos que 'correo' esté aquí
+                    "contraseña": self.sistema.usuario_actual.contraseña,
+                    "tipo": self.sistema.usuario_actual.tipo,
+                    "mi_lista": self.sistema.usuario_actual.mi_lista,
+                    "favoritas": self.sistema.usuario_actual.favoritas,
+                    "historial_sesiones": self.sistema.usuario_actual.historial_sesiones,
+                }
+
+
+            # 4. Iterar sobre todos los usuarios en el diccionario 'usuarios' antes de guardar
+            #    para asegurar que cada diccionario individual tenga la clave 'correo'.
+            #    Esto es para protegerte de datos inconsistentes de cargas anteriores o registros viejos.
+            usuarios_a_guardar = {}
+            for email_key, user_data_dict in usuarios.items():
+                if 'correo' not in user_data_dict:
+                    # Si un diccionario de usuario no tiene 'correo', lo añadimos usando la clave del diccionario principal
+                    user_data_dict['correo'] = email_key
+                    print(f"DEBUG: Añadiendo 'correo' faltante a {email_key} antes de guardar.")
+                usuarios_a_guardar[email_key] = user_data_dict # Reconstruimos el diccionario
+
+            # 5. Guardar el diccionario de usuarios (que ahora está sanitizado)
+            try:
+                Funciones.guardar_usuarios(usuarios_a_guardar, tipo=self.sistema.tipo_usuarios)
+                print("✅ Usuarios guardados al cerrar la interfaz.")
+            except Exception as e:
+                # Muestra un error crítico si el guardado falla
+                print(f"❌ Error al guardar usuarios al cerrar la interfaz: {e}")
+                QMessageBox.critical(self, "Error al guardar", f"No se pudieron guardar los datos: {e}")
+
+        # Tus mensajes QMessageBox que quieres mantener (están fuera del 'if usuario_actual' para que siempre se muestren)
         QMessageBox.information(self, "Cierre de sesión", "🎬 ¡Gracias por usar CineXtreem!")
-        event.accept()
+        event.accept() # Acepta el evento de cierre para que la ventana se cierre.
