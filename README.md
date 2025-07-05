@@ -65,20 +65,20 @@ Or could try this one just being in the repository:
 python Streaming\Interfaz_Principal.py
 ```
 
->Note: If the database doesn't create automatically, run the `Create_db.py` script to create the necessary database and tables:
+**Keep in mind ❗**
+
+1. If the database doesn't create automatically, run the `Create_db.py` script to create the necessary database and tables:
 
 ```bash
 python Streaming\Create_db.py
 ```
 
-Or just move with "cd" to "Streaming" and run this one:
+2. Or just move with "cd" to "Streaming" and run this one: ⬇️
 
 ```bash
 python Create_db.py
 ```
 > Note: If the database exists already, it won't create a new or another one.
-
-                    Enjoy looking up your movies my lad 😌
 
 ## 🫂 Credits
 
